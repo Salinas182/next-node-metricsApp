@@ -12,7 +12,6 @@ const Input = forwardRef(function Input(
     styles = defaultStyles,
     disabled = false,
     onChange,
-    onBlur = () => {},
   },
   ref
 ) {
@@ -29,7 +28,6 @@ const Input = forwardRef(function Input(
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onBlur={onBlur}
         className={styles.input}
         disabled={disabled}
         ref={ref}

@@ -1,18 +1,31 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import httpAdapter from "@/adapters/httpAdapter";
+import useFormValidation from "@/hooks/useFormValidation";
 
 export default function AddMetricsForm() {
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
+  const [formCompleted, setFormCompleted] = useState(false);
   const nameRef = useRef(null);
+  const { validateForm } = useFormValidation({ name, value });
+  
+  useEffect(() => {
+    const { valid } = validateForm();
+    setFormCompleted(valid);
+  }, [validateForm, name, value]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formCompleted) {
+      return;
+    }
+    
     const metric = { name, value: parseFloat(value) };
 
     try {
@@ -50,9 +63,9 @@ export default function AddMetricsForm() {
         </div>
 
         <div className="flex justify-center gap-4">
-          <Button label="Save" />
+          <Button label="Save" disabled={!formCompleted} />
 
-          <Link href="/view">
+          <Link href="/">
             <Button label="View metrics" type="secondary" />
           </Link>
         </div>
