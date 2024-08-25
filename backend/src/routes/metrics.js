@@ -26,4 +26,70 @@ router.get("/metrics", async (req, res) => {
   }
 });
 
+router.get("/metrics/averages", async (req, res) => {
+  try {
+    const perMinute = await Metric.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$timestamp" },
+            month: { $month: "$timestamp" },
+            day: { $dayOfMonth: "$timestamp" },
+            hour: { $hour: "$timestamp" },
+            minute: { $minute: "$timestamp" },
+          },
+          averageValue: { $avg: "$value" },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: -1 },
+      },
+    ]);
+
+    const perHour = await Metric.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$timestamp" },
+            month: { $month: "$timestamp" },
+            day: { $dayOfMonth: "$timestamp" },
+            hour: { $hour: "$timestamp" },
+          },
+          averageValue: { $avg: "$value" },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: -1 },
+      },
+    ]);
+
+    const perDay = await Metric.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$timestamp" },
+            month: { $month: "$timestamp" },
+            day: { $dayOfMonth: "$timestamp" },
+          },
+          averageValue: { $avg: "$value" },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: -1 },
+      },
+    ]);
+
+    res.json({
+      perMinute,
+      perHour,
+      perDay,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error calculating averages" });
+  }
+});
+
 module.exports = router;

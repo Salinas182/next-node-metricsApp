@@ -9,6 +9,10 @@ export default function NavBar() {
       <Link href="/" className="font-bold">
         Home
       </Link>
+
+      <Link href="/add" className="font-bold">
+        New metric
+      </Link>
     </nav>
   );
 }

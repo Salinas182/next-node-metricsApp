@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -9,6 +9,7 @@ import httpAdapter from "@/adapters/httpAdapter";
 export default function AddMetricsForm() {
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
+  const nameRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ export default function AddMetricsForm() {
       await httpAdapter.post("/metrics", metric);
       setName("");
       setValue("");
+      nameRef.current.focus();
     } catch (error) {
       console.error("Error adding metric:", error);
     }
@@ -35,6 +37,7 @@ export default function AddMetricsForm() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             label="Metric name"
+            ref={nameRef}
           />
 
           <Input
@@ -48,6 +51,7 @@ export default function AddMetricsForm() {
 
         <div className="flex justify-center gap-4">
           <Button label="Save" />
+
           <Link href="/view">
             <Button label="View metrics" type="secondary" />
           </Link>
