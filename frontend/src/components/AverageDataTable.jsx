@@ -1,33 +1,32 @@
 "use client";
 
 export default function AverageDataTable({ averages }) {
+  const tableHeaders = ['Date', 'Average Value', 'Metrics Count'];
+
   if (!averages.length) {
     return <span>No data available.</span>
   }
 
   return (
     <div className="overflow-x-auto rounded-sm mb-8">
-      <table className="min-w-full bg-white border border-brand-primary">
+      <table className="min-w-full bg-white">
         <thead className="bg-brand-primary/40">
           <tr>
-            <th className="py-2 px-4 border-b border-gray-200 text-left text-sm font-semibold text-gray-700">
-              Date
-            </th>
-
-            <th className="py-2 px-4 border-b border-gray-200 text-left text-sm font-semibold text-gray-700">
-              Average Value
-            </th>
-
-            <th className="py-2 px-4 border-b border-gray-200 text-left text-sm font-semibold text-gray-700">
-              Metrics count
-            </th>
+            {tableHeaders.map((header) => (
+              <th
+                className="py-2 px-4 border-b border-gray-200 text-left text-sm font-semibold text-gray-700"
+                key={`header-${header}`}
+              >
+                {header}
+              </th>
+            ))}
           </tr>
         </thead>
 
         <tbody>
           {averages.map((avg, index) => (
             <tr key={index} className="hover:bg-gray-50">
-              <td className="py-2 px-4 border-t border-gray-200 text-sm text-gray-700">
+              <td className={styles.tableCells}>
                 {avg._id
                   ? new Date(
                       avg._id.year,
@@ -39,11 +38,11 @@ export default function AverageDataTable({ averages }) {
                   : "No data"}
               </td>
 
-              <td className="py-2 px-4 border-t border-gray-200 text-sm text-gray-700">
+              <td className={styles.tableCells}>
                 {avg.averageValue.toFixed(2)}
               </td>
 
-              <td className="py-2 px-4 border-t border-gray-200 text-sm text-gray-700">
+              <td className={styles.tableCells}>
                 {avg.count}
               </td>
             </tr>
@@ -53,3 +52,7 @@ export default function AverageDataTable({ averages }) {
     </div>
   );
 }
+
+const styles = {
+  tableCells: "py-2 px-4 border-y border-gray-200 text-sm text-gray-700"
+};
