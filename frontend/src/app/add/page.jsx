@@ -2,10 +2,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import httpAdapter from "@/adapters/httpAdapter";
 import useFormValidation from "@/hooks/useFormValidation";
+import { useLoading } from "@/hooks/useLoading";
 
 export default function AddMetricsForm() {
   const [name, setName] = useState("");
@@ -13,7 +15,8 @@ export default function AddMetricsForm() {
   const [formCompleted, setFormCompleted] = useState(false);
   const nameRef = useRef(null);
   const { validateForm } = useFormValidation({ name, value });
-  
+  const { loading, setLoading, renderSpinner } = useLoading();
+
   useEffect(() => {
     const { valid } = validateForm();
     setFormCompleted(valid);
@@ -25,25 +28,34 @@ export default function AddMetricsForm() {
     if (!formCompleted) {
       return;
     }
-    
+
     const metric = { name, value: parseFloat(value) };
 
     try {
+      setLoading(true);
+
       await httpAdapter.post("/metrics", metric);
+
+      setLoading(false)
+      toast.success("Yay! Metric successfully saved!");
       setName("");
       setValue("");
       nameRef.current.focus();
     } catch (error) {
+      setLoading(false);
       console.error("Error adding metric:", error);
+      toast.error("There was an error, please try again");
     }
   };
 
   return (
-    <div className="px-4 py-6">
+    <div className="px-8 py-6 md:m-32 lg:w-1/2 lg:mx-auto lg:my-24 lg:border-solid lg:border-gray-200 lg:border-2 lg:shadow-xl lg:rounded-lg lg:bg-white lg:flex lg:flex-col lg:items-center lg:justify-center lg:h-[70vh]">
+      {loading && renderSpinner()}
+
       <h1 className="text-5xl mb-10 text-center">New metric</h1>
 
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <form onSubmit={handleSubmit} className="lg:w-2/4">
+        <div className="grid grid-cols-1 gap-4 mb-8">
           <Input
             type="text"
             name="name"

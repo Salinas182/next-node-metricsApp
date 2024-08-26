@@ -55,7 +55,7 @@ describe("Input Component", () => {
 
   test("ref is correctly attached", () => {
     const ref = React.createRef();
-    render(<Input name="username" label="Username" ref={ref} />);
+    render(<Input {...defaultProps} ref={ref} />);
 
     expect(ref.current).toBeInTheDocument();
   });

@@ -11,7 +11,7 @@ export default function NavBar() {
       </Link>
 
       <Link href="/add" className="font-bold">
-        New metric
+        + Add new metric
       </Link>
     </nav>
   );
