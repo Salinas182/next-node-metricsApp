@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 const Input = forwardRef(function Input(
   {
     name,
-    label,
+    label = "",
     type = "text",
     placeholder = "",
     value = "",

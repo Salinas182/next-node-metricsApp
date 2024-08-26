@@ -35,4 +35,35 @@ describe("httpAdapter", () => {
     });
     expect(response).toEqual(mockResponse);
   });
+
+  it("should make a PUT request with correct URL and data", async () => {
+    const url = "/test-url";
+    const putData = { key: "updatedValue" };
+    const mockResponse = { data: { success: true } };
+
+    mockAxios.create().put.mockResolvedValue(mockResponse);
+
+    const response = await httpAdapter.put(url, putData);
+
+    expect(mockAxios.create).toHaveBeenCalled();
+    expect(mockAxios.create().put).toHaveBeenCalledWith(url, putData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    expect(response).toEqual(mockResponse);
+  });
+
+  it("should make a DELETE request with correct URL", async () => {
+    const url = "/test-url";
+    const mockResponse = { data: { success: true } };
+
+    mockAxios.create().delete.mockResolvedValue(mockResponse);
+
+    const response = await httpAdapter.delete(url);
+
+    expect(mockAxios.create).toHaveBeenCalled();
+    expect(mockAxios.create().delete).toHaveBeenCalledWith(url);
+    expect(response).toEqual(mockResponse);
+  });
 });

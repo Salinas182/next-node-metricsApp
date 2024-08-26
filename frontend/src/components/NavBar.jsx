@@ -10,9 +10,15 @@ export default function NavBar() {
         Home
       </Link>
 
-      <Link href="/add" className="font-bold">
-        + Add new metric
-      </Link>
+      <div className="flex gap-6 md:gap-10">
+        <Link href="/add" className="font-bold">
+          + Add new metric
+        </Link>
+
+        <Link href="/edit" className="font-bold">
+          Edit metrics
+        </Link>
+      </div>
     </nav>
   );
 }

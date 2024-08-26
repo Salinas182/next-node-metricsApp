@@ -84,11 +84,11 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-8 md:p-24 lg:justify-center">
+    <main className="flex min-h-screen flex-col items-center justify-between p-8 md:m-24 md:border-solid md:border-gray-200 md:border-2 md:shadow-xl md:rounded-lg lg:justify-center">
       {loading && renderSpinner()}
 
       <div className="md:flex md:flex-wrap md:gap-2 md:justify-between lg:flex-col">
-        <h2 className="text-2xl font-bold mt-8 mb-4 md:basis-full">
+        <h2 className="text-2xl text-center font-bold mt-8 mb-4 md:basis-full">
           Metrics Averages
         </h2>
 
@@ -125,9 +125,23 @@ export default function Home() {
         <Timeline metrics={metrics} />
       </div>
 
-      <Link href="/add">
-        <Button label="Add a new metric" type="primary" styles={"w-48 h-16"} />
-      </Link>
+      <div className="flex gap-2">
+        <Link href="/add">
+          <Button
+            label="Add a new metric"
+            type="primary"
+            styles={styles.buttons}
+          />
+        </Link>
+
+        <Link href="/edit">
+          <Button
+            label="Edit metrics"
+            type="secondary"
+            styles={styles.buttons}
+          />
+        </Link>
+      </div>
     </main>
   );
 }
@@ -135,4 +149,5 @@ export default function Home() {
 const styles = {
   activeFilter: "bg-white rounded-full w-1/4",
   inactiveFilter: "w-1/4",
+  buttons: "h-16 w-32 md:w-48"
 };

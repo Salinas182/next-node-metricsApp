@@ -16,6 +16,28 @@ router.post("/metrics", async (req, res) => {
   }
 });
 
+router.put("/metrics/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, value } = req.body;
+
+  try {
+    const metric = await Metric.findByIdAndUpdate(
+      id,
+      { name, value },
+      { new: true, runValidators: true }
+    );
+
+    if (!metric) {
+      return res.status(404).json({ message: "Metric not found" });
+    }
+
+    res.json(metric);
+  } catch (error) {
+    console.error("Error updating metric:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 router.get("/metrics", async (req, res) => {
   try {
     const metrics = await Metric.find();
@@ -89,6 +111,23 @@ router.get("/metrics/averages", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Error calculating averages" });
+  }
+});
+
+router.delete("/metrics/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const metric = await Metric.findByIdAndDelete(id);
+
+    if (!metric) {
+      return res.status(404).json({ message: "Metric not found" });
+    }
+
+    res.json({ message: "Metric deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting metric:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

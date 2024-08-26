@@ -12,6 +12,13 @@ const httpAdapter = {
         "Content-Type": "application/json",
       },
     }),
+  put: (url, data) =>
+    api.put(url, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }),
+  delete: (url) => api.delete(url),
 };
 
 export default httpAdapter;

@@ -29,11 +29,13 @@ export default function AverageDataTable({ averages }) {
               <td className={styles.tableCells}>
                 {avg._id
                   ? new Date(
-                      avg._id.year,
-                      avg._id.month - 1,
-                      avg._id.day,
-                      avg._id.hour || 0,
-                      avg._id.minute || 0
+                      Date.UTC(
+                        avg._id.year,
+                        avg._id.month - 1,
+                        avg._id.day,
+                        avg._id.hour || 0,
+                        avg._id.minute || 0
+                      )
                     ).toLocaleString()
                   : "No data"}
               </td>
@@ -42,9 +44,7 @@ export default function AverageDataTable({ averages }) {
                 {avg.averageValue.toFixed(2)}
               </td>
 
-              <td className={styles.tableCells}>
-                {avg.count}
-              </td>
+              <td className={styles.tableCells}>{avg.count}</td>
             </tr>
           ))}
         </tbody>
