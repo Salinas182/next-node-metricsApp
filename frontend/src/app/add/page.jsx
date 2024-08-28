@@ -62,6 +62,7 @@ export default function AddMetricsForm() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             label="Metric name"
+            placeholder="Random metric"
             ref={nameRef}
           />
 
@@ -71,6 +72,7 @@ export default function AddMetricsForm() {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             label="Metric value"
+            placeholder="3"
           />
         </div>
 
